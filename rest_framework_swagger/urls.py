@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from dj-swagger.views import SwaggerResourcesView, SwaggerApiView, SwaggerUIView
+from rest_framework_swagger.views import SwaggerResourcesView, SwaggerApiView, SwaggerUIView
 
 
 urlpatterns = [
