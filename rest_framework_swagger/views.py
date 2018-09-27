@@ -4,6 +4,7 @@ from django.utils import six
 from django.conf import settings
 from django.views.generic import View
 from django.utils.safestring import mark_safe
+from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import smart_text
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext
