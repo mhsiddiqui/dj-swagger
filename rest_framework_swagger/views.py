@@ -2,7 +2,6 @@ import json
 from django.utils import six
 
 from django.conf import settings
-from django.contrib.sites.shortcuts import get_current_site
 from django.views.generic import View
 from django.utils.safestring import mark_safe
 from django.utils.encoding import smart_text
@@ -48,7 +47,7 @@ def get_full_base_path(request):
         base_path = rfs.SWAGGER_SETTINGS['base_path']
     except KeyError:
         current_site = get_current_site(request)
-        base_path = current_site.domain
+        base_path = current_site.domain + request.get_full_path()
     #protocol = 'https' if request.is_secure() else 'http'
     protocol = 'https'
     return '{0}://{1}'.format(protocol, base_path.rstrip('/'))
