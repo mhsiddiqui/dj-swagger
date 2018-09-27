@@ -49,7 +49,8 @@ def get_full_base_path(request):
     except KeyError:
         current_site = get_current_site(request)
         base_path = current_site.domain
-    protocol = 'https' if request.is_secure() else 'http'
+    #protocol = 'https' if request.is_secure() else 'http'
+    protocol = 'https'
     return '{0}://{1}'.format(protocol, base_path.rstrip('/'))
 
 
