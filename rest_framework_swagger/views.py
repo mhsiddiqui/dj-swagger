@@ -49,8 +49,7 @@ def get_full_base_path(request):
     except KeyError:
         current_site = get_current_site(request)
         base_path = current_site.domain + request.get_full_path()
-    #protocol = 'https' if request.is_secure() else 'http'
-    protocol = 'https'
+    protocol = 'https' if request.is_secure() else 'http'
     return '{0}://{1}'.format(protocol, base_path.rstrip('/'))
 
 
@@ -134,11 +133,10 @@ class SwaggerResourcesView(APIDocView):
         try:
             base_path = rfs.SWAGGER_SETTINGS['base_path']
         except KeyError:
-            return self.request.build_absolute_uri(
-                self.request.path).rstrip('/')
-        else:
-            protocol = 'https' if self.request.is_secure() else 'http'
-            return '{0}://{1}/{2}'.format(protocol, base_path, 'api-docs')
+            current_site = get_current_site(request)
+            base_path = current_site.domain + request.get_full_path()
+        protocol = 'https' if self.request.is_secure() else 'http'
+        return '{0}://{1}/{2}'.format(protocol, base_path, 'api-docs')
 
     def get_resources(self):
         urlparser = UrlParser()
