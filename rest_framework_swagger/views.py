@@ -161,7 +161,7 @@ class SwaggerApiView(APIDocView):
             'apiVersion': rfs.SWAGGER_SETTINGS.get('api_version', ''),
             'swaggerVersion': '1.2',
             'basePath': self.get_api_full_uri(),
-            'resourcePath': '/' + path,
+            'resourcePath': path,
             'apis': generator.generate(apis),
             'models': generator.get_models(apis),
         })
