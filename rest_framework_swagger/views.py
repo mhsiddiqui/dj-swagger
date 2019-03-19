@@ -160,11 +160,17 @@ class SwaggerApiView(APIDocView):
         return Response({
             'apiVersion': rfs.SWAGGER_SETTINGS.get('api_version', ''),
             'swaggerVersion': '1.2',
-            'basePath': self.api_full_uri.rstrip('/'),
+            'basePath': self.get_api_full_uri(),
             'resourcePath': '/' + path,
             'apis': generator.generate(apis),
             'models': generator.get_models(apis),
         })
+
+    def get_api_full_uri(self):
+        current_site = get_current_site(self.request)
+        base_path = current_site.domain
+        protocol = protocol = 'https' if 'https' in self.request.META.get('HTTP_REFERER') else 'http'
+        return '{0}://{1}'.format(protocol, base_path)
 
     def get_apis_for_resource(self, filter_path):
         urlparser = UrlParser()
