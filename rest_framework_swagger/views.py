@@ -49,7 +49,7 @@ def get_full_base_path(request):
     except KeyError:
         current_site = get_current_site(request)
         base_path = current_site.domain + request.get_full_path()
-    protocol = request.META.get('wsgi.url_scheme')
+    protocol = 'https' if 'https' in request.META.get('HTTP_REFERER') else 'http'
     return '{0}://{1}'.format(protocol, base_path.rstrip('/'))
 
 
@@ -68,8 +68,7 @@ class SwaggerUIView(View):
                 'token_type': rfs.SWAGGER_SETTINGS.get('token_type'),
                 'enabled_methods': mark_safe(
                     json.dumps(rfs.SWAGGER_SETTINGS.get('enabled_methods'))),
-                'doc_expansion': rfs.SWAGGER_SETTINGS.get('doc_expansion', ''),
-                'protocol': request.META.get('HTTP_REFERER')
+                'doc_expansion': rfs.SWAGGER_SETTINGS.get('doc_expansion', '')
             },
             'rest_framework_settings': {
                 'DEFAULT_VERSIONING_CLASS':
@@ -136,7 +135,7 @@ class SwaggerResourcesView(APIDocView):
         except KeyError:
             current_site = get_current_site(self.request)
             base_path = current_site.domain + self.request.get_full_path()
-        protocol = self.request.META.get('wsgi.url_scheme')
+        protocol = protocol = 'https' if 'https' in self.request.META.get('HTTP_REFERER') else 'http'
         return '{0}://{1}/{2}'.format(protocol, base_path, 'api-docs')
 
     def get_resources(self):
