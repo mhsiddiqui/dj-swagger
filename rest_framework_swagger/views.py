@@ -43,13 +43,22 @@ def get_restructuredtext(view_cls, html=False):
     return description
 
 
+def get_protocol(request):
+    referrer = request.META.get('HTTP_REFERER')
+    if referrer:
+        return 'https' if 'https' in request.META.get('HTTP_REFERER') else 'http'
+    else:
+        host = request.META.get('HTTP_HOST').split('.')[0]
+        return 'https' if host in ['dev', 'staging', 'prod'] else 'http' 
+
+
 def get_full_base_path(request):
     try:
         base_path = rfs.SWAGGER_SETTINGS['base_path']
     except KeyError:
         current_site = get_current_site(request)
         base_path = current_site.domain + request.get_full_path()
-    protocol = 'https' if 'https' in request.META.get('HTTP_REFERER') else 'http'
+    protocol = get_protocol(request)
     return '{0}://{1}'.format(protocol, base_path.rstrip('/'))
 
 
