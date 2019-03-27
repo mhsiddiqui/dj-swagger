@@ -144,7 +144,7 @@ class SwaggerResourcesView(APIDocView):
         except KeyError:
             base_path = self.request.build_absolute_uri(
                 self.request.path).rstrip('/')
-        protocol = protocol = 'https' if 'https' in self.request.META.get('HTTP_REFERER') else 'http'
+        protocol = get_protocol(self.request)
         return base_path.replace('http:', '%s:' % protocol)
 
     def get_resources(self):
@@ -178,7 +178,7 @@ class SwaggerApiView(APIDocView):
     def get_api_full_uri(self):
         current_site = get_current_site(self.request)
         base_path = current_site.domain
-        protocol = protocol = 'https' if 'https' in self.request.META.get('HTTP_REFERER', 'https') else 'http'
+        protocol = get_protocol(self.request)
         return '{0}://{1}'.format(protocol, base_path)
 
     def get_apis_for_resource(self, filter_path):
